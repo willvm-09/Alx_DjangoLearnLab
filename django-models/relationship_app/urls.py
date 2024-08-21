@@ -10,8 +10,8 @@ urlpatterns = [
     path('login/', auth_views.LoginView.as_view(template_name=""), name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name=""), name='logout'),
     path('register/', views.register, name='register'),
-    path('relationship_app/', admin_view, name='admin_dashboard'),
-    path('relationship_app/', librarian_view, name='librarian_dashboard'),
-    path('relationship_app/', member_view, name='member_dashboard'),
+    path('relationship_app/', admin_view, name='admin'),
+    path('relationship_app/', librarian_view, name='librarian'),
+    path('relationship_app/', member_view, name='member'),
 ]
     
