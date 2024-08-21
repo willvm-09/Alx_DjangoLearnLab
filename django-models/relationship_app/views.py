@@ -42,28 +42,32 @@ class LibraryDetailView(DetailView):
 
 #define custom test functions that check if the user has a specific role
 
-def is_admin(user):
-    return user.is_authenticated and hasattr(user, 'userprofile') and user.userprofile.role == 'Admin'
+class Admin:
+    def __call__(self, user):
+        return user.is_authenticated and hasattr(user, 'userprofile') and user.userprofile.role == 'Admin'
 
-def is_librarian(user):
-    return user.is_authenticated and hasattr(user, 'userprofile') and user.userprofile.role == 'Librarian'
+class Librarian:
+    def __call__(self, user):
+        return user.is_authenticated and hasattr(user, 'userprofile') and user.userprofile.role == 'Librarian'
 
-def is_member(user):
-    return user.is_authenticated and hasattr(user, 'userprofile') and user.userprofile.role == 'Member'
+class Member:
+    def __call__(self, user):
+        return user.is_authenticated and hasattr(user, 'userprofile') and user.userprofile.role == 'Member'
+
 
 #create separate views for each role and apply the @user_passes_test decorator to ensure only users with the appropriate role can access each view.
 
 @method_decorator(user_passes_test(is_admin, login_url='/login/'), name='dispatch')
-class Admin(View):
+class AdminView(View):
     def get(self, request, *args, **kwargs):
         return HttpResponse("Welcome, Admin! This is your dashboard.")
 
 @method_decorator(user_passes_test(is_librarian, login_url='/login/'), name='dispatch')
-class Librarian(View):
+class LibrarianView(View):
     def get(self, request, *args, **kwargs):
         return HttpResponse("Welcome, Librarian! Here you can manage the library.")
 
 @method_decorator(user_passes_test(is_member, login_url='/login/'), name='dispatch')
-class Member(View):
+class MemberView(View):
     def get(self, request, *args, **kwargs):
         return HttpResponse("Welcome, Member! Enjoy your membership benefits.")
