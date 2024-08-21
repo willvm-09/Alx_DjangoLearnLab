@@ -1,34 +1,15 @@
-from django.shortcuts import render, redirect
-from django.views.generic.detail import DetailView
-from .models import Library
-from .models import Book
-
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import login
-
-from django.contrib.auth.decorators import user_passes_test
-from django.http import HttpResponse
-from django.views import View
-from django.utils.decorators import method_decorator
+from django.shortcuts import render
 
 # Create your views here.
 
-def register(request):
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-            return redirect('login')  # Replace 'home' with your desired redirect URL after registration
-    else:
-        form = UserCreationForm()
-    return render(request, 'relationship_app/register.html', {'form': form})
+from relationship_app.models import Book
 
-
-def list_books(request):
+def book_list(request):
     books = Book.objects.all()
-    context = {'list_books': books}
-    return render(request, 'relationship_app/list_books.html', context)
+    return render(request, 'relationship_app/list_books.html', {'books': books})
+
+from django.views.generic.detail import DetailView
+from .models import Library
 
 class LibraryDetailView(DetailView):
     model = Library
@@ -37,8 +18,23 @@ class LibraryDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['books'] = self.books.all()
+        context['books'] = Book.objects.filter(library=self.object)
         return context
+
+from django.shortcuts import render, redirect
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login
+
+def signup(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('book_list')
+    else:
+        form = UserCreationForm()
+    return render(request, 'registration/register.html', {'form': form})
 
 from django.contrib.auth.decorators import user_passes_test
 from .models import UserProfile
@@ -140,6 +136,12 @@ def delete_book(request, pk):
         book.delete()
         return redirect('library_detail', pk=book.library.pk)
     return render(request, 'relationship_app/delete_book.html', {'book': book})
+
+
+
+
+
+
 
 
 from typing import Any
