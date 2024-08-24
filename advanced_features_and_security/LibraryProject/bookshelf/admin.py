@@ -27,7 +27,7 @@ class LibraryAdmin(admin.ModelAdmin):
 
 class CustomUserAdmin(UserAdmin):
     # Fields to be used in displaying the User model.
-    list_display = ('username', 'email', 'first_name', 'last_name', 'date_of_birth', 'is_staff')
+    list_display = ('username', 'email', 'first_name', 'last_name', 'date_of_birth', 'is_staff', )
     list_filter = ('is_staff', 'is_superuser', 'is_active', 'groups')
 
     # Fields to be used in the admin detail view (when editing a user)
