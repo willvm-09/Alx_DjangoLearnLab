@@ -168,3 +168,16 @@ def safe_search_view(request):
         else:
             results = []
         return render(request, 'results.html', {'results': results, 'form': form})
+
+from .forms import ExampleForm
+
+def example_view(request):
+    if request.method == 'POST':
+        form = ExampleForm(request.POST)
+        if form.is_valid():
+            form.save()  # Save the form data to the database
+            return redirect('success_url')  # Redirect to a success page
+    else:
+        form = ExampleForm()
+    
+    return render(request, 'example_template.html', {'form': form})

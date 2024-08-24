@@ -6,11 +6,12 @@
     {% comment %} <link rel="stylesheet" href="{% static 'css/styles.css' %}"> {% endcomment %}
 </head>
 <body>
-    <h1>Home page</h1>
-    <form method="post" action="{% url 'bookshelf:login' %}">
+    <form method="post">
         {% csrf_token %}
-        <button type="submit">Login</button>
+        {{ form.as_p }}  <!-- Renders the form fields as paragraphs -->
+        <button type="submit">Submit</button>
     </form>
+    
   
 </body>
 </html>
