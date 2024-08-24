@@ -32,7 +32,7 @@ def register(request):
     return render(request, 'bookshelf/register.html', {'form': form})
 
 
-def list_books(request):
+def book_list(request):
     books = Book.objects.all()
     context = {'list_books': books}
     return render(request, 'bookshelf/list_books.html', context)
