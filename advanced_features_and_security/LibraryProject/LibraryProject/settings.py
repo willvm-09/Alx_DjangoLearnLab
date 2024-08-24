@@ -152,3 +152,11 @@ SESSION_COOKIE_SECURE = True
 #templates
 #
 #Update form templates to explicitly include the CSRF token tag {% csrf_token %} if not already present.
+
+SECURE_SSL_REDIRECT = True
+
+SECURE_HSTS_SECONDS = 31536000 
+
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+
+SECURE_HSTS_PRELOAD = True
