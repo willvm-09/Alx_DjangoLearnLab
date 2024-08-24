@@ -15,7 +15,7 @@ from django.urls import reverse_lazy
 from django.views import View
 from .models import UserProfile
 from typing import Any
-from .forms import BookForm
+from django.forms import BookForm
 
 
 # Create your views here.
@@ -24,9 +24,10 @@ def register(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
+
             user = form.save()
             login(request, user)
-            return redirect('login')  # Replace 'home' with your desired redirect URL after registration
+            return redirect('login')
     else:
         form = UserCreationForm()
     return render(request, 'bookshelf/register.html', {'form': form})
@@ -138,3 +139,32 @@ def delete_author(request, author_id):
 def author_detail(request, author_id):
     author = get_object_or_404(Author, pk=author_id)
     return render(request, 'booksheld/author_detail.html', {'author': author})
+
+#In views.py, I added two extra functions to showcase how I would parameterize queries instead of string formatting.
+#Validate and sanitize all user inputs using Django forms or other validation method
+#This is by using the %s a placeholder for the actual value. Django safely inserts the user_input value into the query, ensuring that it is properly escaped and not interpreted as SQL code.
+
+from django.db import connection
+
+def safe_search_view(request):
+    user_input = request.GET.get('search')
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM items WHERE name = %s", [user_input])
+        results = cursor.fetchall()
+    return render(request, 'results.html', {'results': results})
+
+
+from django import forms
+
+class SearchForm(forms.Form):
+    search = forms.CharField(max_length=100, required=True)
+
+def safe_search_view(request):
+    if request.method == 'GET':
+        form = SearchForm(request.GET)
+        if form.is_valid():
+            user_input = form.cleaned_data['search']
+            results = MyModel.objects.filter(name__icontains=user_input)
+        else:
+            results = []
+        return render(request, 'results.html', {'results': results, 'form': form})

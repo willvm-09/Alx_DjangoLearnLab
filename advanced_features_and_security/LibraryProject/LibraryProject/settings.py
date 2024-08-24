@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-#z6an$$-7f$kzjjo%td^ct4k(oie4l_$o8)7(oz15f^z#7g&o*'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -48,6 +48,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
 ]
 
 ROOT_URLCONF = 'LibraryProject.urls'
@@ -128,3 +129,26 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = "bookshelf.CustomUser"
+
+SECURE_BROWSER_XSS_FILTER = True
+
+X_FRAME_OPTIONS = 'DENY'
+
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+CSRF_COOKIE_SECURE = True
+
+SESSION_COOKIE_SECURE = True
+
+#Comments on security measures implemented
+
+#settings.py
+
+#Set DEBUG to False in production.
+#Configure SECURE_BROWSER_XSS_FILTER, X_FRAME_OPTIONS, and SECURE_CONTENT_TYPE_NOSNIFF to True to add additional browser-side protections.
+#I ensured CSRF_COOKIE_SECURE and SESSION_COOKIE_SECURE are set to True to enforce that cookies are sent over HTTPS only.
+#I used Django’s django-csp middleware by including 'django.middleware.security.SecurityMiddleware' in settings.py
+
+#templates
+#
+#Update form templates to explicitly include the CSRF token tag {% csrf_token %} if not already present.
