@@ -17,7 +17,7 @@ class ListView(generics.ListAPIView):
     filter_backends = [DjangoFilterBackend]
     filterset_class = BookSerializer
 
-    filter_backends = [OrderingFilter]
+    filter_backends = [filters.OrderingFilter]
     filterset_class = BookSerializer
     ordering_fields = ['title', 'publication_year']
     ordering = ['title']
