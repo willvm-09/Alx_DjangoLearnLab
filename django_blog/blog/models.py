@@ -35,6 +35,7 @@ class Post(models.Model):
     content = models.TextField()
     published_date = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(User, on_delete=models.PROTECT, null=False, blank=False)
+    tags = models.ManyToManyField(Tag, related_name='posts')
 
     def __str__(self):
         return self.title
@@ -48,4 +49,10 @@ class Comment(models.Model):
 
     def __str__(self):
         return f'Comment by {self.author} on {self.post}'
+    
+class Tag(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+
+    def __str__(self):
+        return self.name
 
