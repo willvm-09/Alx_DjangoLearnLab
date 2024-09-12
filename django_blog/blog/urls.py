@@ -22,7 +22,7 @@ urlpatterns = [
 from . import views
 
 urlpatterns = [
-    path('posts/<int:post_id>/comments/new/', views.CommentCreateView, name='add_comment'),
-    path('comments/<int:comment_id>/update/', views.CommentUpdateView, name='edit_comment'),
-    path('comments/<int:comment_id>/delete/', views.CommentDeleteView, name='delete_comment'),
+    path('post/<int:pk>/comments/new/', views.CommentCreateView, name='add_comment'),
+    path('comment/<int:pk>/update/', views.CommentUpdateView, name='edit_comment'),
+    path('comment/<int:pk>/delete/', views.CommentDeleteView, name='delete_comment'),
 ]
