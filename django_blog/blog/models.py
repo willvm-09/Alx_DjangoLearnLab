@@ -35,3 +35,6 @@ class Post(models.Model):
     content = models.TextField()
     published_date = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(User, on_delete=models.PROTECT, null=False, blank=False)
+
+    def __str__(self):
+        return self.title
