@@ -132,3 +132,9 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # AUTH_USER_MODEL = "blog.User"
+
+LOGIN_URL = 'login'
+
+SESSION_COOKIE_SECURE = True  # Ensures cookies are sent over HTTPS only
+CSRF_COOKIE_SECURE = True     # Ensures CSRF cookies are sent over HTTPS only
+X_FRAME_OPTIONS = 'DENY'      # Protect against clickjacking attacks
