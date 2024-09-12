@@ -135,7 +135,6 @@ def search_posts(request):
 
 from .models import Post, Tag
 
-def posts_by_tag(request, tag_name):
+class PostByTagListView(request, tag_name):
     tag = get_object_or_404(Tag, name=tag_name)
     posts = Post.objects.filter(tags=tag)
-    return render(request, 'blog/posts_by_tag.html', {'tag': tag, 'posts': posts})
