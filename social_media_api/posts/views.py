@@ -80,7 +80,7 @@ class LikePostView(generics.GenericAPIView):
             return Response({'status': 'already liked'}, status=status.HTTP_400_BAD_REQUEST)
 
         # Create the Like entry
-        like = Like.objects.create(user=request.user, post=post)
+        like = Like.objects.get_or_create(user=request.user, post=post)
 
         # Create a notification (optional)
         notification = Notification.objects.create(
@@ -96,7 +96,7 @@ class UnlikePostView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, post_id):
-        post = get_object_or_404(Post, id=post_id)
+        post = generics.get_object_or_404(Post, pk=pk)
 
         # Find the like entry
         try:
@@ -106,3 +106,5 @@ class UnlikePostView(generics.GenericAPIView):
             return Response({'status': 'unliked', 'post': post.title}, status=status.HTTP_204_NO_CONTENT)
         except Like.DoesNotExist:
             return Response({'status': 'not liked'}, status=status.HTTP_400_BAD_REQUEST)
+
+
