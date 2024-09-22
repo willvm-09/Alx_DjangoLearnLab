@@ -36,3 +36,24 @@ class UserProfileSerializer(serializers.ModelSerializer):
         instance.profile_picture = validated_data.get('profile_picture', instance.profile_picture)
         instance.save()
         return instance
+    
+from rest_framework.authtoken.models import Token
+from django.contrib.auth import get_user_model
+
+# Get the user model
+User = get_user_model()
+
+# Create a new user
+user = User.objects.create_user(
+    username='newuser', 
+    email='newuser@example.com', 
+    password='password123',
+    bio='I love Django',
+    profile_picture='path/to/profile_picture.jpg'
+)
+
+# Create a token for the newly created user
+token = Token.objects.create(user=user)
+
+# Output the token key
+print(f"Token for {user.username}: {token.key}")
