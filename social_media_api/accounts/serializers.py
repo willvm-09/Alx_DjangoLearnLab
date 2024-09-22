@@ -41,7 +41,7 @@ from rest_framework.authtoken.models import Token
 from django.contrib.auth import get_user_model
 
 # Create a new user
-user = get_user_model().User.objects.create_user(
+user = get_user_model().objects.create_user(
     username='newuser', 
     email='newuser@example.com', 
     password='password123',
