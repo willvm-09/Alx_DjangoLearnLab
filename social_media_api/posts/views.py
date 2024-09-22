@@ -52,7 +52,7 @@ from .models import Post
 
 class UserFeedView(generics.ListAPIView):
     serializer_class = PostSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         # Get the current user
