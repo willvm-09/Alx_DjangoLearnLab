@@ -23,9 +23,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-z97baq)x&8sz#d57s+bibexsaoh+qa5$sr)nfc9utw-8&#v4wo'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['yourdomain.com', 'www.yourdomain.com', 'your_ip_address']
+
 
 
 # Application definition
@@ -84,6 +85,17 @@ DATABASES = {
     }
 }
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'your_db_name',
+        'USER': 'your_db_user',
+        'PASSWORD': 'your_db_password',
+        'HOST': 'your_db_host',  # e.g., 'localhost' or your database server's IP
+        'PORT': 'your_db_port',  # usually '5432' for PostgreSQL
+    }
+}
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -134,3 +146,36 @@ REST_FRAMEWORK = {
         'django_filters.rest_framework.DjangoFilterBackend',
     ),
 }
+
+# XSS Protection
+SECURE_BROWSER_XSS_FILTER = True
+
+# Clickjacking Protection
+X_FRAME_OPTIONS = 'DENY'
+
+# Prevent MIME-type sniffing
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# Redirect all HTTP requests to HTTPS
+SECURE_SSL_REDIRECT = True
+
+# HSTS (HTTP Strict Transport Security)
+SECURE_HSTS_SECONDS = 3600  # Set to 1 year (31536000) for production
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+
+
+# Use secure cookies
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+# Set a unique key for your application
+SECRET_KEY = 'your_secret_key'  # Ensure this is kept secret in production
+
+# Static files (CSS, JavaScript, Images)
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Media files (User uploads)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
