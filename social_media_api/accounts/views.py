@@ -7,6 +7,8 @@ from rest_framework.authtoken.models import Token
 from rest_framework import status
 from django.contrib.auth import get_user_model
 from .serializers import UserRegistrationSerializer
+from notifications.models import Notification
+
 
 # Get the custom user model
 User = get_user_model()
@@ -82,6 +84,13 @@ class FollowUserView(generics.GenericAPIView):
         user_to_follow = get_object_or_404(CustomUser, id=user_id)
         CustomUser.objects.all()
         request.user.following.add(user_to_follow)
+
+        Notification.objects.create(
+            recipient=user_to_follow,
+            actor=request.user,
+            verb='started following you',
+            target=None
+        )
         return Response({'status': 'following', 'user': user_to_follow.username}, status=status.HTTP_200_OK)
 
 class UnfollowUserView(generics.GenericAPIView):
@@ -91,3 +100,5 @@ class UnfollowUserView(generics.GenericAPIView):
         user_to_unfollow = get_object_or_404(CustomUser, id=user_id)
         request.user.following.remove(user_to_unfollow)
         return Response({'status': 'unfollowed', 'user': user_to_unfollow.username}, status=status.HTTP_200_OK)
+
+
