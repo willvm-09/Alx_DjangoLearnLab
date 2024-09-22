@@ -46,3 +46,18 @@ class CommentViewSet(viewsets.ModelViewSet):
         if self.request.method in ['PUT', 'PATCH', 'DELETE']:
             self.permission_classes = [IsAuthenticated, IsAuthorOrReadOnly]
         return super().get_permissions()
+    
+from rest_framework import generics
+from .models import Post
+
+class UserFeedView(generics.ListAPIView):
+    serializer_class = PostSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        # Get the current user
+        user = self.request.user
+        # Return posts from users the current user follows
+        following_users = user.following.all()
+        return Post.objects.filter(author__in=following_users).order_by('-created_at')
+
